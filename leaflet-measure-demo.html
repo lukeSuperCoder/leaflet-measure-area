@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Leaflet测量组件示例</title>
+  <link rel="stylesheet" href="./lib/leaflet.css" />
+  <link rel="stylesheet" href="./lib/leaflet-geoman.css" />
+
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+    
+    .control-panel {
+      position: absolute;
+      top: 10px;
+      left: 100px;
+      z-index: 1000;
+      background-color: white;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    }
+    
+    .control-panel button {
+      margin: 5px;
+      padding: 8px 12px;
+      background-color: #3388ff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .control-panel button:hover {
+      background-color: #0066cc;
+    }
+    
+    .unit-display {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="./lib/leaflet.js"></script>
+  <script src="./lib/leaflet-geoman.min.js"></script>
+  <script src="./lib/leaflet.draw.js"></script>
+  <script src="./leaflet-measure.js"></script>
+
+  <div id="map"></div>
+  <div class="control-panel">
+    <button onclick="startMeasure()">开始测量</button>
+    <button onclick="stopMeasure()">停止测量</button>
+    <button onclick="switchUnit()">切换单位</button>
+    <button onclick="getMeasurements()">获取测量结果</button>
+    <button onclick="clearAll()">清除所有</button>
+    <select id="shapeSelect" onchange="changeShape()" style="margin: 5px; padding: 8px; border-radius: 4px; border: 1px solid #3388ff;">
+      <option value="Polygon">多边形</option>
+      <option value="Rectangle">矩形</option>
+      <option value="Circle">圆形</option>
+    </select>
+    <div class="unit-display">当前单位: 千米</div>
+  </div>
+
+  <script>
+    // 初始化地图
+    const map = L.map('map').setView([51.505, -0.09], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+
+    // 初始化测量组件
+    const measureTool = new L.measureArea(map, {
+      // 可以在这里传入自定义选项
+      polygonOptions: {
+        snappable: true,
+        templineStyle: {
+          color: '#3288FF'
+        }
+      }
+    });
+    
+    // 添加样式
+    measureTool.addStyles();
+    
+    // 开始测量
+    function startMeasure() {
+      const shape = document.getElementById('shapeSelect').value;
+      measureTool.startDraw(shape);
+    }
+    
+    // 停止测量
+    function stopMeasure() {
+      measureTool.stopDraw();
+    }
+    
+    // 切换形状
+    function changeShape() {
+      const shape = document.getElementById('shapeSelect').value;
+      if (measureTool.isDrawing) {
+        measureTool.stopDraw();
+      }
+    }
+    
+    // 切换单位
+    function switchUnit() {
+      const currentUnit = measureTool.switchUnit();
+      document.querySelector('.unit-display').textContent = '当前单位: ' + currentUnit;
+    }
+    
+    // 清除所有测量
+    function clearAll() {
+      measureTool.clearAll();
+    }
+    
+    // 获取测量结果示例
+    function getMeasurements() {
+      const measurements = measureTool.getMeasurements();
+      console.log('测量结果:', measurements);
+      alert('请在控制台查看测量结果');
+    }
+  </script>
+</body>
+
+</html>
