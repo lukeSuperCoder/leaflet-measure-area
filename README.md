@@ -12,6 +12,9 @@
 - 完全通过API控制，无需UI按钮
 - 支持图形绘制时的吸附功能
 
+## 查看演示地址
+[查看演示](https://lukesupercoder.github.io/leaflet-measure-area/measure-area-demo.html)
+
 ## 使用方法
 
 ### 引入依赖
