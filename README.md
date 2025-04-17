@@ -15,6 +15,9 @@
 ## 查看演示地址
 [查看演示](https://lukesupercoder.github.io/leaflet-measure-area/measure-area-demo.html)
 
+## 介绍
+[介绍](https://juejin.cn/post/7493572494961246242)
+
 ## 使用方法
 
 ### 引入依赖
